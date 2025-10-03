@@ -4,7 +4,7 @@ import wikipedia
 import datetime
 import pyjokes
 import yfinance as yf
-from googletrans import Translator
+from deep_translator import GoogleTranslator
 import re
 import math
 
@@ -70,7 +70,6 @@ class WebJarvis:
         self.weather_api_key = "a51eaca1954a256f122d4f1c8d4290b2"
         self.weather_base_url = "https://api.openweathermap.org/data/2.5/weather?"
         self.news_api_key = "YOUR_NEWS_API_KEY"  # Get from newsapi.org
-        self.translator = Translator()
         st.info("💡 Enhanced Jarvis - Now with News, Stocks, Sports, Currency, Dictionary & More!")
 
     # ==================== EXISTING FEATURES ====================
@@ -220,8 +219,8 @@ class WebJarvis:
     # TRANSLATOR
     def translate_text(self, text: str, target_lang: str) -> str:
         try:
-            translation = self.translator.translate(text, dest=target_lang)
-            return f"🌐 Translation ({target_lang}): {translation.text}"
+            translated = GoogleTranslator(source='auto', target=target_lang).translate(text)
+            return f"🌐 Translation ({target_lang}): {translated}"
         except Exception as e:
             return f"❌ Translation error: {str(e)}"
 
@@ -442,13 +441,12 @@ class WebJarvis:
 
         return "🤔 I'm not sure. Try 'help' for available commands."
 
-
+# ==================== INITIALIZE ====================
 if 'reminders' not in st.session_state:
     st.session_state.reminders = []
 if 'todos' not in st.session_state:
     st.session_state.todos = []
 
-# -------------------- INITIALIZE --------------------
 jarvis = WebJarvis()
 
 # -------------------- MAIN UI --------------------
